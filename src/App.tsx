@@ -5,6 +5,16 @@ function Item({ title }: { title: string }) {
   const [item, setItem] = useState<HTMLLIElement | null>(null);
 
   useEffect(() => {
+    const id = setInterval(() => {
+      console.log(1);
+    }, 1000);
+
+    return () => {
+      clearInterval(id);
+    };
+  }, []);
+
+  useEffect(() => {
     const handleClick = () => {
       console.log("component is existing on the dom = mounted");
     };
@@ -30,14 +40,7 @@ function Item({ title }: { title: string }) {
 }
 
 function App() {
-  const [items, setItems] = useState([
-    { id: 1, title: "title" },
-    { id: 2, title: "title" },
-    { id: 3, title: "title" },
-    { id: 4, title: "title" },
-    { id: 5, title: "title" },
-    { id: 6, title: "title" }
-  ]);
+  const [items, setItems] = useState([{ id: 1, title: "title" }]);
 
   console.log(items);
 
