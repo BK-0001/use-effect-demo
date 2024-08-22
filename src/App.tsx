@@ -1,17 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
   const [item, setItem] = useState();
   const [value, setValue] = useState("");
-  // get the data from api
-  fetch("https://jsonplaceholder.typicode.com/todos")
-    .then((res) => res.json())
-    .then((result) => {
-      console.log("running");
 
-      setItem(result[0].title);
-    });
+  useEffect(() => {
+    // get the data from api
+    const getItem = async () => {
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/todos"
+      );
+      const data = await response.json();
+
+      setItem(data[0].title);
+    };
+
+    getItem();
+  }, [value]);
 
   // render first item
   return (
