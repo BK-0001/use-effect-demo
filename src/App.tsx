@@ -5,6 +5,20 @@ function Item({ title }: { title: string }) {
   const [item, setItem] = useState<HTMLLIElement | null>(null);
 
   useEffect(() => {
+    const handleClick = () => {
+      console.log("component is existing on the dom = mounted");
+    };
+
+    item?.addEventListener("click", handleClick);
+
+    return () => {
+      console.log("disappeared = unmounted");
+
+      item?.removeEventListener("click", handleClick);
+    };
+  }, [item]);
+
+  useEffect(() => {
     item?.scrollIntoView({ behavior: "smooth" });
   }, [item]);
 
@@ -29,11 +43,14 @@ function App() {
 
   // render first item
   return (
-    <ul>
-      {items.map((item) => (
-        <Item key={item.id} title={item.title} />
-      ))}
-    </ul>
+    <>
+      <button onClick={() => setItems([])}>Remove All Items</button>
+      <ul>
+        {items.map((item) => (
+          <Item key={item.id} title={item.title} />
+        ))}
+      </ul>
+    </>
   );
 }
 
