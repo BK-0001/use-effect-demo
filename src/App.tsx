@@ -1,35 +1,54 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
-function App() {
-  const [item, setItem] = useState();
-  const [value, setValue] = useState("");
+function Item({ title }: { title: string }) {
+  const [item, setItem] = useState<HTMLLIElement | null>(null);
 
   useEffect(() => {
-    // get the data from api
-    const getItem = async () => {
-      const response = await fetch(
-        "https://jsonplaceholder.typicode.com/todos"
-      );
-      const data = await response.json();
+    item?.scrollIntoView({ behavior: "smooth" });
+  }, [item]);
 
-      setItem(data[0].title);
-    };
+  return (
+    <li ref={setItem}>
+      <p>{title}</p>
+    </li>
+  );
+}
 
-    getItem();
-  }, [value]);
+function App() {
+  const [items, setItems] = useState([
+    { id: 1, title: "title" },
+    { id: 2, title: "title" },
+    { id: 3, title: "title" },
+    { id: 4, title: "title" },
+    { id: 5, title: "title" },
+    { id: 6, title: "title" }
+  ]);
+
+  console.log(items);
 
   // render first item
   return (
-    <>
-      <div>{item}</div>
-      <input
-        type="text"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
-    </>
+    <ul>
+      {items.map((item) => (
+        <Item key={item.id} title={item.title} />
+      ))}
+    </ul>
   );
 }
 
 export default App;
+
+// useEffect(() => {
+//   // get the data from api
+//   const getItem = async () => {
+//     const response = await fetch(
+//       "https://jsonplaceholder.typicode.com/todos"
+//     );
+//     const data = await response.json();
+
+//     setItems(data);
+//   };
+
+//   getItem();
+// }, []);
